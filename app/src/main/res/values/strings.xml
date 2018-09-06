@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">JobScheduler</string>
+    <string name="date_format">dd-MM-yyyy</string>
+    <string name="time_format">hh:mm:ss aa</string>
+</resources>
