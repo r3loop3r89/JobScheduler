@@ -53,8 +53,12 @@ public class SMBGServiceModule extends Fragment {
         String text;
         if (Utils.isMyServiceRunning(mCtx, BgService.class)) {
             text = "Service is <font color='green'>Running</font>";
+            bStartService.setEnabled(false);
+            bStopService.setEnabled(true);
         } else {
             text = "Service is <font color='red'>Not Running</font>";
+            bStartService.setEnabled(true);
+            bStopService.setEnabled(false);
         }
         Spanned spanned = Html.fromHtml(text);
         tvBGServiceStatus.setText(spanned);

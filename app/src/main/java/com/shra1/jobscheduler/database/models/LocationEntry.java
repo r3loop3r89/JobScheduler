@@ -85,6 +85,24 @@ public class LocationEntry {
             asyncTask.execute();
         }
 
+        public static void getDataFor(DateTime from, DateTime to, getDataForCallback c) {
+            AsyncTask<Void, Void, List<LocationEntry>>
+                    voidVoidListAsyncTask = new AsyncTask<Void, Void, List<LocationEntry>>() {
+                @Override
+                protected List<LocationEntry> doInBackground(Void... voids) {
+                    return db.getLocationEntryDao().getDataFor(from.getMillis(), to.getMillis());
+                }
+
+                @Override
+                protected void onPostExecute(List<LocationEntry> locationEntries) {
+                    super.onPostExecute(locationEntries);
+                    c.onComplete(locationEntries);
+                }
+            };
+
+            voidVoidListAsyncTask.execute();
+        }
+
         public static void getDataFor(DateTime dateTime, getDataForCallback c) {
             AsyncTask<Void, Void, List<LocationEntry>>
                     voidVoidListAsyncTask = new AsyncTask<Void, Void, List<LocationEntry>>() {

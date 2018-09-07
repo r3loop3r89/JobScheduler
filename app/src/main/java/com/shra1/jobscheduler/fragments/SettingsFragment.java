@@ -49,7 +49,7 @@ public class SettingsFragment extends Fragment {
         settingModules.add(new SettingModule("Provider", new SMProviderConfigModule()));
         settingModules.add(new SettingModule("Interval", new SMIntervalConfigModule()));
         settingModules.add(new SettingModule("Autostart", new SMAutostartConfigModule()));
-        settingModules.add(new SettingModule("Autostart", new SMDataBackupModule()));
+        settingModules.add(new SettingModule("Backup", new SMDataBackupModule()));
 
         SettingModulesListAdapter adapter = new SettingModulesListAdapter(mCtx, settingModules, getFragmentManager());
         lvSFSettingModules.setAdapter(adapter);

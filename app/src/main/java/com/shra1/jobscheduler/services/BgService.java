@@ -8,6 +8,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.annotation.Nullable;
 
 import com.shra1.jobscheduler.database.models.LocationEntry;
@@ -26,7 +27,7 @@ public class BgService extends Service {
 
     private static BgService IN = null;
     LocationManager locationManager;
-    Location currentLocation=null;
+    Location currentLocation = null;
     LocationListener ll = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -49,6 +50,7 @@ public class BgService extends Service {
         }
     };
     Disposable disposable;
+    PowerManager.WakeLock wakeLock;
 
     public static BgService getInstance() {
         return IN;
@@ -70,11 +72,19 @@ public class BgService extends Service {
         if (!disposable.isDisposed()) {
             disposable.dispose();
         }
+        wakeLock.release();
     }
 
     @SuppressLint("MissingPermission")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "ShrAwake");
+
+        wakeLock.acquire();
 
         IN = this;
 
@@ -100,7 +110,7 @@ public class BgService extends Service {
                     @Override
                     public void onNext(Long aLong) {
                         //((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(1000);
-                        if (currentLocation!=null){
+                        if (currentLocation != null) {
                             LocationEntry locationEntry = new LocationEntry(
                                     currentLocation.getLatitude(),
                                     currentLocation.getLongitude(),
